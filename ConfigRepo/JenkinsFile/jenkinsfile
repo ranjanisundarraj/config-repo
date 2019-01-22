@@ -24,7 +24,7 @@ pipeline {
 			stage('SonarQube Analysis') {
 				steps {
 					dir(gitProps.PROJECT_PATH) {
-						sh gitProps.BUILD_SONAR_SCAN
+						sh gitProps.SONAR_SCAN
 						echo 'SonarQube Analysis completed'
 					}
 				}
