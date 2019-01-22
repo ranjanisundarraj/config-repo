@@ -1,50 +1,50 @@
 pipeline {
 	agent any
 		stages {
-			//Properties File loading
-			stage('Load Properties File') {
+			//Properties File Initiation
+			stage('Properties File Load') {
 				steps {
 					script {
 						gitProps = readProperties file: 'PropertiesFile/PropertiesFile.properties'
-						echo "Properties File load Success"
+						echo "Properties File loaded"
 						}
 					}
 			}
 
 			//GIT Cloning
-			stage('SCM Checkout') {
+			stage('Git Clone') {
 				steps {
 					git url: gitHubProps.GIT_APP_REPO,
 					branch: gitHubProps.GIT_APP_REPO_BRANCH
-					echo 'SCM Checkout Success'
+					echo 'Git Clone completed'
 					}
 			}
 
-			//Sonar Scanning
+			//SonarQube Analysis
 			stage('SonarQube Analysis') {
 				steps {
 					dir(gitHubProps.PROJECT_PATH) {
 						sh sonarProps.BUILD_SONAR_SCAN
-						echo 'SoanrQube Analysis Success'
+						echo 'SonarQube Analysis completed'
 					}
 				}
 			}
 			
-			//Maven Building
-			stage('Maven Build') {
+			//Maven Build
+			stage('Build Maven') {
 				steps {
 					dir(gitHubProps.PROJECT_PATH) {
 						sh gitHubProps.MAVEN_BUILD
-						echo 'Maven Build Success'
+						echo 'Maven Build completed'
 					}
 				}
 			}			
 			
-			//Artifact Archiving and Uploading
-			stage('Artifact Upload') {
+			//Artifactory Upload
+			stage('Artifacts Upload') {
 				steps {
 					script {
-						server = Artifactory.server artProps.ARTIFACTORY_SERVER
+						server = Artifactory.server artProps.ARTIFACTORY_ID
 						def uploadSpec = """{
 							"files": [
 	                    		{
@@ -53,9 +53,8 @@ pipeline {
 	                    		}
 	                    		]
 	                		}"""
-	                		echo "Artifact Archival Success"
 	                	server.upload(uploadSpec) 
-              			echo "Artifact Upload Success"
+              			echo "Artifact Uploaded"
 	            	}
 				}
 			}	
