@@ -49,7 +49,7 @@ pipeline {
 							"files": [
 	                    		{
 	                    			"pattern": "target/*.war",
-	                        		"target": "demo-java/target/Build #${env.BUILD_NUMBER}/"
+	                        		"target": "example-repo-local/target/Build #${env.BUILD_NUMBER}/"
 	                    		}
 	                    		]
 	                		}"""
