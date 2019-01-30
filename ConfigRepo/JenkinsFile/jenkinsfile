@@ -56,8 +56,35 @@ pipeline {
 	                	server.upload(uploadSpec) 
               			echo "Artifact Uploaded"
 	            	}
+		}
+			
+			// Docker Deploying
+			stage('Docker Deployment') {
+				steps {
+					script {
+						try	{
+							sh deployProps.dockerContainerId
+							res=readFile('result').trim()
+							
+							if(res!=null) {
+								sh deployProps.dockerContainerRm
+								echo "Docker Container Found and removed"
+							}
+						} catch (err) {
+							echo "Delete Failed"
+						}
+						
+						sh deployProps.dockerDeploy
+						echo "Deployment Success"
+						sh deployProps.dockerRestart
+						echo "Docker Restarted"
+						
+					}		
 				}
-				
+			}
+					
+		}
+		
 			
 			post {
 			always {
