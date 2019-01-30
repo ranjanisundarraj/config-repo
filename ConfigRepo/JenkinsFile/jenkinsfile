@@ -64,9 +64,9 @@ pipeline {
 				script {
 					emailext ( 
 						subject: '${DEFAULT_SUBJECT}', 
-						body: '${DEFAULT_CONTENT}'
-						to: gitProps.TO_RECIPIENT )
-					);
+						body: '${DEFAULT_CONTENT}',
+						to: gitProps.TO_RECIPIENT
+					)
 					echo "Status Mail Sent"
 				}
 	       		 }
