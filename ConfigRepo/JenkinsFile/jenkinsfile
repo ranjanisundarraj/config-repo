@@ -61,7 +61,29 @@ pipeline {
 					}
 			}		
 			
-			
+		//Docker Deploying
+			stage('Docker Deployment') {
+			steps {
+				script {
+					try{
+					sh gitProps.DOCKER_CONTAINER_ID
+						res=readFile('result').trim()
+							if(res!=null) {
+								sh gitProps.DOCKER_CONTAINER_RM
+								echo "Docker Container Found and removed"
+							}
+					    } catch (err) {
+							echo "Delete Failed"
+					    }
+						
+						sh gitProps.DOCKER_DEPLOY
+						echo "Deployment Success"
+						sh gitProps.DOCKER_RESTART
+						echo "Docker Restarted"
+						
+					}		
+				}
+			}	
 				
 				
 	}
