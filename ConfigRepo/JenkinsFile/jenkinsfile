@@ -59,7 +59,7 @@ pipeline {
               						echo "Artifact Uploaded"
 	            				}
 					}
-				}
+			}
 			
 			// Docker Deploying
 			stage('Docker Deployment') {
@@ -74,7 +74,7 @@ pipeline {
 							}
 					    } catch (err) {
 							echo "Delete Failed"
-					      		  }
+					    }
 						
 						sh gitProps.DOCKER_DEPLOY
 						echo "Deployment Success"
@@ -86,6 +86,7 @@ pipeline {
 			}
 			
 			//Email Trigger
+			stage('Email Trigger') {
 			post {
 			always {
 				script {
@@ -98,7 +99,8 @@ pipeline {
 					}
 	       			 }
 			}					
-		}	
+		}
+	}
 		
 }
 
