@@ -63,20 +63,20 @@ pipeline {
 				steps {
 					script {
 						try	{
-							sh deployProps.dockerContainerId
+							sh gitProps.DOCKER_CONTAINER_ID
 							res=readFile('result').trim()
 							
 							if(res!=null) {
-								sh deployProps.dockerContainerRm
+								sh gitProps.DOCKER_CONTAINER_RM
 								echo "Docker Container Found and removed"
 							}
 						} catch (err) {
 							echo "Delete Failed"
 						}
 						
-						sh deployProps.dockerDeploy
+						sh gitProps.DOCKER_DEPLOY
 						echo "Deployment Success"
-						sh deployProps.dockerRestart
+						sh gitProps.DOCKER_RESTART
 						echo "Docker Restarted"
 						
 					}		
