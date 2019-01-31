@@ -66,16 +66,15 @@ pipeline {
 			steps {
 				script {
 					try{
-						sh gitProps.DOCKER_CONTAINER_ID
-							res=readFile('result').trim()
-							
+					sh gitProps.DOCKER_CONTAINER_ID
+						res=readFile('result').trim()
 							if(res!=null) {
 								sh gitProps.DOCKER_CONTAINER_RM
 								echo "Docker Container Found and removed"
 							}
-						} catch (err) {
+					    } catch (err) {
 							echo "Delete Failed"
-						}
+					      		  }
 						
 						sh gitProps.DOCKER_DEPLOY
 						echo "Deployment Success"
@@ -85,7 +84,8 @@ pipeline {
 					}		
 				}
 			}
-						
+			
+			//Email Trigger
 			post {
 			always {
 				script {
