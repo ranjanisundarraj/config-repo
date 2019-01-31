@@ -86,7 +86,6 @@ pipeline {
 			}
 			
 			//Email Trigger
-			stage('Email Trigger') {
 			post {
 			always {
 				script {
@@ -99,7 +98,6 @@ pipeline {
 					}
 	       			 }
 			}					
-		}
 	}
 		
 }
