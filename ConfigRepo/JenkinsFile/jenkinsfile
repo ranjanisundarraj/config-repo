@@ -1,8 +1,9 @@
 pipeline {
 	agent any
-		stages {
-			//Properties File Initiation
-			stage('Properties File Load') {
+	stages {
+		//Properties File Initiation
+		stage('Properties File Load') 
+			{
 				steps {
 					script {
 						gitProps = readProperties file: 'ConfigRepo/PropertiesFile/pipeline.properties'
@@ -12,7 +13,8 @@ pipeline {
 			}
 
 			//GIT Cloning
-			stage('Git Clone') {
+			stage('Git Clone') 
+			{
 				steps {
 					git url: gitProps.GIT_APP_REPO,
 					branch: gitProps.GIT_APP_REPO_BRANCH
@@ -46,24 +48,25 @@ pipeline {
 					script {
 						server = Artifactory.server gitProps.ARTIFACTORY_ID
 						def uploadSpec = """{
-							"files": [
-	                    		{
+								"files": [
+	                    						{
 	                    			"pattern": "target/*.war",
 	                        		"target": "example-repo-local/target/Build #${env.BUILD_NUMBER}/"
-	                    		}
-	                    		]
-	                		}"""
-	                	server.upload(uploadSpec) 
-              			echo "Artifact Uploaded"
-	            	}
-		}
+	                    						}
+	                    						]
+	                					}"""
+	                				server.upload(uploadSpec) 
+              						echo "Artifact Uploaded"
+	            				}
+					}
+				}
 			
 			// Docker Deploying
 			stage('Docker Deployment') {
-				steps {
-					script {
-						try	{
-							sh gitProps.DOCKER_CONTAINER_ID
+			steps {
+				script {
+					try{
+						sh gitProps.DOCKER_CONTAINER_ID
 							res=readFile('result').trim()
 							
 							if(res!=null) {
@@ -82,10 +85,7 @@ pipeline {
 					}		
 				}
 			}
-					
-		}
-		
-			
+						
 			post {
 			always {
 				script {
@@ -93,13 +93,12 @@ pipeline {
 						subject: '${DEFAULT_SUBJECT}', 
 						body: '${DEFAULT_CONTENT}',
 						to: gitProps.TO_RECIPIENT
-					)
+						)
 					echo "Status Mail Sent"
-				}
-	       		 }
+					}
+	       			 }
+			}					
 		}	
-					
-	}	
 		
 }
 
