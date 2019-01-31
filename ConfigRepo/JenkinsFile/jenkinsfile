@@ -62,7 +62,11 @@ pipeline {
 			}		
 			
 			
-			//Email Trigger
+				
+				
+	}
+	
+	//Email Trigger
 			post {
 			always {
 				script {
@@ -72,11 +76,9 @@ pipeline {
 						to: gitProps.TO_RECIPIENT
 						)
 							echo "Status Mail Sent"
-						}
+					}
 	       			}
-			}		
-				
-	}
-		
+			}	
+
 }
 
