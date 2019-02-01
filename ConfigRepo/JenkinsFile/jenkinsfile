@@ -70,17 +70,11 @@ pipeline {
               				 sh 'sudo rm -rf /tmp/webapps'
                 			 sh 'mkdir /tmp/webapps'
                 			 sh 'cp */target/*.war /tmp/webapps/'  
+					 docker.image("tomcat:latest").pull();
+					sh 'docker run -d --name dockertomcat -p 8888:8080 -v /tmp/webapps/:/usr/local/tomcat/webapps/:rw tomcat:latest'
 				}
      			   }
-			   
-			   //Docker: Building tomcat image
-        
-       			 stage('Building tomcat image') {
-
-						docker.image("tomcat:latest").pull();
-						sh 'docker run -d --name dockertomcat -p 8888:8080 -v /tmp/webapps/:/usr/local/tomcat/webapps/:rw tomcat:latest'
-				  }		
-	}
+		}
 	
 	//Email Trigger
 			post {
