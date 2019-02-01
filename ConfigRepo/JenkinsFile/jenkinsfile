@@ -64,19 +64,23 @@ pipeline {
 			//Docker: Creating Volume
 			
 			 stage('create temp volume') {
+			 step{
                				 sh 'docker stop dockertomcat'
                				 sh 'docker rm dockertomcat'
               				 sh 'sudo rm -rf /tmp/webapps'
                 			 sh 'mkdir /tmp/webapps'
                 			 sh 'cp */target/*.war /tmp/webapps/'  
+				}
      			   }
 			   
 			   //Docker: Building tomcat image
         
        			 stage('Building tomcat image') {
+			 Steps{
            				docker.image("tomcat:latest").pull();
           				sh 'docker run -d --name dockertomcat -p 8888:8080 -v /tmp/webapps/:/usr/local/tomcat/webapps/:rw tomcat:latest'
-     			   } 		
+     			  }
+			  } 		
 	}
 	
 	//Email Trigger
