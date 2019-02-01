@@ -76,11 +76,10 @@ pipeline {
 			   //Docker: Building tomcat image
         
        			 stage('Building tomcat image') {
-			 Steps{
-           				docker.image("tomcat:latest").pull();
-          				sh 'docker run -d --name dockertomcat -p 8888:8080 -v /tmp/webapps/:/usr/local/tomcat/webapps/:rw tomcat:latest'
-     			  }
-			  } 		
+
+						docker.image("tomcat:latest").pull();
+						sh 'docker run -d --name dockertomcat -p 8888:8080 -v /tmp/webapps/:/usr/local/tomcat/webapps/:rw tomcat:latest'
+				  }		
 	}
 	
 	//Email Trigger
