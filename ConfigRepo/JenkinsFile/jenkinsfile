@@ -61,26 +61,22 @@ pipeline {
 					}
 			}	
 			
-			//Docker Deploying
-			stage('Docker Deployment') {
-			steps {
-				script {
-					try{
-					sh gitProps.DOCKER_CONTAINER_ID
-					res=readFile('result').trim()
-				
-				    } catch (err) {
-						echo "Delete Failed"
-				    }
-						
-						sh gitProps.DOCKER_DEPLOY
-						echo "Deployment Success"
-						sh gitProps.DOCKER_RESTART
-						echo "Docker Restarted"
-						
-					}		
-				}
-			}							
+			//Docker: Creating Volume
+			
+			 stage('create temp volume') {
+               				 sh 'docker stop dockertomcat'
+               				 sh 'docker rm dockertomcat'
+              				 sh 'sudo rm -rf /tmp/webapps'
+                			 sh 'mkdir /tmp/webapps'
+                			 sh 'cp */target/*.war /tmp/webapps/'  
+     			   }
+			   
+			   //Docker: Building tomcat image
+        
+       			 stage('Building tomcat image') {
+           				docker.image("tomcat:latest").pull();
+          				sh 'docker run -d --name dockertomcat -p 8888:8080 -v /tmp/webapps/:/usr/local/tomcat/webapps/:rw tomcat:latest'
+     			   } 		
 	}
 	
 	//Email Trigger
