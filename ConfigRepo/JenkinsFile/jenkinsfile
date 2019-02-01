@@ -63,8 +63,8 @@ pipeline {
 			
 			//Docker: Creating Volume
 			
-			 stage('create temp volume') {
-			 step{
+			 stage('Mount temp volume') {
+			 steps{
                				 sh 'docker stop dockertomcat'
                				 sh 'docker rm dockertomcat'
               				 sh 'sudo rm -rf /tmp/webapps'
