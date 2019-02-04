@@ -68,7 +68,11 @@ pipeline {
 					try{
 					sh gitProps.DOCKER_CONTAINER_ID
 					res=readFile('result').trim()
-				
+						if(res!=null)
+						{
+							sh gitProps.DOCKER_CONTAINER_RM
+						}
+
 				    } catch (err) {
 						echo "Delete Failed"
 				    }
